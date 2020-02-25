@@ -25,8 +25,8 @@ function getContents(sourcePath, output){
 const path = __dirname;
 files = [];
 getContents(path, files);
-
+/*
 for(var i = 0; i < files.length; i++){
 	files[i] = files[i].replace(path, '');
-}
+}*/
 console.log(files);
