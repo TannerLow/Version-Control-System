@@ -1,3 +1,15 @@
+/* Authors: Tanner Lowthorp   lowthorpt@gmail.com 
+ *          Edmund Zhou       edmundhypebeast@gmail.com
+ *          Parth Chhasatiya  chhasatiyaparth@gmail.com
+ *          Saurav Chhapawala sauravc41@gmail.com
+ *
+ * Description:
+ *	 This file handles the serving of the landing page as
+ *	 well as the functions necessary to create a repo
+ */
+
+
+
 const express = require('express');
 const fs = require('fs');
 
@@ -76,7 +88,7 @@ function getContents(sourcePath, output){
 	fs.readdirSync(sourcePath).forEach(function(file){
 		//ignores dot-files
 		if(file.toString().charAt(0) != '.'){
-			file = sourcePath + "\\" + file;
+			file = sourcePath + "/" + file;
 			let stats = fs.statSync(file);
 			if(stats){
 				//ignores directories and goes into them
@@ -108,7 +120,7 @@ function makeDirectory(filepath){
 //Creates a copy of a file in the repo with its ArtID name
 function createArtifact(filepath, repoPath){
 	var artID = getArtID(filepath);
-	copyFile(filepath, repoPath + '\\' + artID);
+	copyFile(filepath, repoPath + '/' + artID);
 }
 
 /*Takes the initial command and a list of source file paths.
@@ -121,22 +133,22 @@ function createManifestFile(command, files){
 
 	data += Date().toString() + '\n';
 	for(var file of files){
-		data += file.replace(source + '\\','') + ' ' + getArtID(file) + '\n';
+		data += file.replace(source + '/','') + ' ' + getArtID(file) + '\n';
 	}
 
 	//names the manifest file
 	var manifestNumber = 1;
-	var filepath = repo + "\\.man-" + manifestNumber + ".rc";
+	var filepath = repo + "/.man-" + manifestNumber + ".rc";
 	while(fs.existsSync(filepath)){
 		manifestNumber++;
-		filepath = repo + "\\.man-" + manifestNumber + ".rc";
+		filepath = repo + "/.man-" + manifestNumber + ".rc";
 	}
 
 	//writes the 2 manifest files
 	fs.writeFile(filepath, data, function(err){
 		if(err) throw err;
 	});
-	fs.writeFile(source + "\\.man-" + manifestNumber + ".rc", data, function(err){
+	fs.writeFile(source + "/.man-" + manifestNumber + ".rc", data, function(err){
 		if(err) throw err;
 	});
 }
